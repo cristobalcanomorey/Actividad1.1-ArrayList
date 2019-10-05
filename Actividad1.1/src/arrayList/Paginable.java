@@ -1,6 +1,7 @@
 package arrayList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import main.Producto;
 
@@ -16,10 +17,10 @@ public class Paginable <E extends Producto> {
 	
 	private ArrayList<Object> productos = new ArrayList<Object>();
 	private int prodPorPag = 3;
-	private int numDePags;
+	private int numDePags = 0;
 	
-	Paginable(ArrayList<Object> productos){
-		this.productos = productos;
+	Paginable(Producto[] prod){
+		this.productos = new ArrayList<Object>(Arrays.asList(prod));
 		numDePags = (int) Math.ceil(productos.size()/prodPorPag);
 	}
 		
@@ -29,6 +30,7 @@ public class Paginable <E extends Producto> {
 	 */
 	public void add(Producto p){
 		productos.add(p);
+		numDePags = (int) Math.ceil(productos.size()/prodPorPag);
 	}
 	
 	/***
@@ -39,6 +41,8 @@ public class Paginable <E extends Producto> {
 		if(contains(p)) {
 			productos.remove(p);
 		}
+		
+		numDePags = (int) Math.ceil(productos.size()/prodPorPag);
 	}
 	
 	/***
