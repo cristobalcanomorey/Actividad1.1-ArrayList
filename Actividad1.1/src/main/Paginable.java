@@ -1,18 +1,16 @@
-package arrayList;
+package main;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import main.Producto;
-
 public class Paginable <E extends Producto> {
 
 	/*
-	 * add
-	 * remove
-	 * contains
-	 * getPage(int index)
+	 * add					V
+	 * remove				V
+	 * contains		
+	 * getPage(int index)	V
 	 * int getTotalPages()
 	 * size*/
 	
@@ -70,14 +68,21 @@ public class Paginable <E extends Producto> {
 	 * @return Devuelve array de productos
 	 */
 	public Producto<?>[] getPage(int n) {
-		Producto<?>[] resul = new Producto<?>[prodPorPag];
+		int tamPag = prodPorPag;
 		int primProd = n * prodPorPag;
 		int ultProd = primProd+prodPorPag;
 		if(ultProd>productos.size()) {
 			ultProd = productos.size();
+			tamPag = ultProd-primProd;
 		}
-		List<Producto<?>> pag = productos.subList(primProd, ultProd);
-		resul = (Producto<?>[]) pag.toArray();
+		Producto<?>[] resul = new Producto<?>[tamPag];
+		List pag = productos.subList(primProd, ultProd);
+				
+		for (int i = 0; i < pag.size(); i++) {
+			resul[i] = (Producto<?>) pag.get(i);
+		}
+//		
+//		resul = (Producto<?>[]) pag.toArray();
 		
 		return resul;
 	}
