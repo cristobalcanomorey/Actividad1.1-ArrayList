@@ -9,10 +9,11 @@ public class Paginable <E extends Producto> {
 	/*
 	 * add					V
 	 * remove				V
-	 * contains		
+	 * contains				V
 	 * getPage(int index)	V
-	 * int getTotalPages()
-	 * size*/
+	 * int getTotalPages()	V
+	 * size					V
+	 * */
 	
 	private ArrayList<Producto<?>> productos = new ArrayList<Producto<?>>();
 	private int prodPorPag = 3;
@@ -29,7 +30,7 @@ public class Paginable <E extends Producto> {
 	 */
 	public void add(Producto<?> p){
 		productos.add(p);
-		numDePags = (int) Math.ceil(productos.size()/prodPorPag);
+		numDePags++;
 	}
 	
 	/***
@@ -41,7 +42,7 @@ public class Paginable <E extends Producto> {
 			productos.remove(p);
 		}
 		
-		numDePags = (int) Math.ceil(productos.size()/prodPorPag);
+		numDePags--;
 	}
 	
 	/***
@@ -70,7 +71,7 @@ public class Paginable <E extends Producto> {
 	public Producto<?>[] getPage(int n) {
 		int tamPag = prodPorPag;
 		int primProd = n * prodPorPag;
-		int ultProd = primProd+prodPorPag;
+		int ultProd = primProd + prodPorPag;
 		if(ultProd>productos.size()) {
 			ultProd = productos.size();
 			tamPag = ultProd-primProd;
@@ -85,6 +86,14 @@ public class Paginable <E extends Producto> {
 //		resul = (Producto<?>[]) pag.toArray();
 		
 		return resul;
+	}
+	
+	public int getTotalPages() {
+		
+		return numDePags;
+	}
+	public int size() {
+		return productos.size();
 	}
 	
 }
