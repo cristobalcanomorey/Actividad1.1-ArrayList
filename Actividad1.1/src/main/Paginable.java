@@ -20,6 +20,13 @@ public class Paginable <E extends Producto> {
 	private int numDePags = 0;
 	
 	Paginable(Producto<?>[] prod){
+		ArrayList<Producto<?>> lista = new ArrayList<Producto<?>>(Arrays.asList(prod));
+		ArrayList<Producto<?>> listaSinRepe = new ArrayList<Producto<?>>();
+		for (Producto<?> producto : lista) {
+			if(!listaSinRepe.contains(producto)) {
+				listaSinRepe.add(producto);
+			}
+		}
 		this.productos = new ArrayList<Producto<?>>(Arrays.asList(prod));
 		numDePags = (int) Math.ceil(productos.size()/prodPorPag);
 	}
