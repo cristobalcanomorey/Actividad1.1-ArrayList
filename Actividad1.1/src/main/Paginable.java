@@ -11,7 +11,7 @@ public class Paginable <E extends Producto> {
 	 * remove()					V
 	 * contains()				V
 	 * getPage(int index)		V
-	 * findPageOf(Producto p)	X
+	 * findPageOf(Producto p)	V
 	 * int getTotalPages()		V
 	 * size()					V
 	 * */
@@ -21,10 +21,20 @@ public class Paginable <E extends Producto> {
 	private int numDePags = 0;
 	
 	/***
-	 * Crea un paginable transformando un array de productos a un ArrayList sin ids repetidas
+	 * Crea un paginable transformando un array de productos a un ArrayList sin productos repetidos
 	 * @param prod Array de productos
 	 */
 	Paginable(Producto<?>[] prod){
+		this.productos = quitaRepetidos(prod);
+		numDePags = (int) Math.ceil(productos.size()/prodPorPag);
+	}
+	
+	/***
+	 * Devuelve un array sin productos repetidos
+	 * @param prod
+	 * @return
+	 */
+	private ArrayList<Producto<?>> quitaRepetidos(Producto<?>[] prod){
 		ArrayList<Producto<?>> lista = new ArrayList<Producto<?>>(Arrays.asList(prod));
 		ArrayList<Producto<?>> listaSinRepe = new ArrayList<Producto<?>>();
 		for (Producto<?> producto : lista) {
@@ -32,18 +42,17 @@ public class Paginable <E extends Producto> {
 				listaSinRepe.add(producto);
 			}
 		}
-		this.productos = listaSinRepe;
-		numDePags = (int) Math.ceil(productos.size()/prodPorPag);
+		return listaSinRepe;
 	}
 		
 	/***
-	 * Solo añade productos en el array
+	 * Añade productos en el array si no está repetida y actualiza el nº de páginas buscando la página del último producto añadido
 	 * @param p Producto
 	 */
 	public boolean add(Producto<?> p){
 		if(!productos.contains(p)) {
 			productos.add(p);
-			numDePags++;
+			numDePags = findPageOf(p);
 			return true;
 		} else {
 			return false;
@@ -52,13 +61,13 @@ public class Paginable <E extends Producto> {
 	}
 	
 	/***
-	 * Elimina el producto del array
+	 * Elimina el producto del array si está y actualiza el nº de páginas buscando la página del último elemento de la lista
 	 * @param p Producto
 	 */
 	public boolean remove(Producto<?> p) {
 		if(contains(p)) {
 			productos.remove(p);
-			numDePags--;
+			numDePags = findPageOf(productos.get(productos.size()-1));
 			return true;
 		} else {
 			return false;
@@ -104,9 +113,6 @@ public class Paginable <E extends Producto> {
 		for (int i = 0; i < pag.size(); i++) {
 			resul[i] = (Producto<?>) pag.get(i);
 		}
-//		
-//		resul = (Producto<?>[]) pag.toArray();
-		
 		return resul;
 	}
 	
@@ -125,9 +131,9 @@ public class Paginable <E extends Producto> {
 	}
 	
 	public int getTotalPages() {
-		
 		return numDePags;
 	}
+	
 	public int size() {
 		return productos.size();
 	}
