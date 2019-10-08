@@ -29,7 +29,6 @@ public class Paginable <E extends Producto> {
 		ArrayList<Producto<?>> listaSinRepe = new ArrayList<Producto<?>>();
 		for (Producto<?> producto : lista) {
 			if(!listaSinRepe.contains(producto)) {
-				producto.setId(listaSinRepe.size());
 				listaSinRepe.add(producto);
 			}
 		}
