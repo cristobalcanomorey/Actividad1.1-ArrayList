@@ -7,27 +7,33 @@ import java.util.List;
 public class Paginable <E extends Producto> {
 
 	/*
-	 * add					V
-	 * remove				V
-	 * contains				V
-	 * getPage(int index)	V
-	 * int getTotalPages()	V
-	 * size					V
+	 * add()					V
+	 * remove()					V
+	 * contains()				V
+	 * getPage(int index)		V
+	 * findPageOf(Producto p)	X
+	 * int getTotalPages()		V
+	 * size()					V
 	 * */
 	
 	private ArrayList<Producto<?>> productos = new ArrayList<Producto<?>>();
 	private int prodPorPag = 3;
 	private int numDePags = 0;
 	
+	/***
+	 * Crea un paginable transformando un array de productos a un ArrayList sin ids repetidas
+	 * @param prod Array de productos
+	 */
 	Paginable(Producto<?>[] prod){
 		ArrayList<Producto<?>> lista = new ArrayList<Producto<?>>(Arrays.asList(prod));
 		ArrayList<Producto<?>> listaSinRepe = new ArrayList<Producto<?>>();
 		for (Producto<?> producto : lista) {
 			if(!listaSinRepe.contains(producto)) {
+				producto.setId(listaSinRepe.size());
 				listaSinRepe.add(producto);
 			}
 		}
-		this.productos = new ArrayList<Producto<?>>(Arrays.asList(prod));
+		this.productos = listaSinRepe;
 		numDePags = (int) Math.ceil(productos.size()/prodPorPag);
 	}
 		
@@ -103,6 +109,20 @@ public class Paginable <E extends Producto> {
 //		resul = (Producto<?>[]) pag.toArray();
 		
 		return resul;
+	}
+	
+	/***
+	 * Devuelve el nº de página en la que se encuentra el producto
+	 * @param p Producto a buscar
+	 * @return -1 si no está o el nº de pag si está
+	 */
+	public int findPageOf(Producto<?> p) {
+		if(!productos.contains(p)) {
+			return -1;
+		} else {
+			return (int) Math.ceil((productos.indexOf(p)+1)/prodPorPag);
+		}
+		
 	}
 	
 	public int getTotalPages() {
