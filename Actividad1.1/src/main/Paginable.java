@@ -28,21 +28,31 @@ public class Paginable <E extends Producto> {
 	 * Solo añade productos en el array
 	 * @param p Producto
 	 */
-	public void add(Producto<?> p){
-		productos.add(p);
-		numDePags++;
+	public boolean add(Producto<?> p){
+		if(!productos.contains(p)) {
+			productos.add(p);
+			numDePags++;
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 	
 	/***
 	 * Elimina el producto del array
 	 * @param p Producto
 	 */
-	public void remove(Producto<?> p) {
+	public boolean remove(Producto<?> p) {
 		if(contains(p)) {
 			productos.remove(p);
+			numDePags--;
+			return true;
+		} else {
+			return false;
 		}
 		
-		numDePags--;
+		
 	}
 	
 	/***
