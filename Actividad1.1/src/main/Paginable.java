@@ -24,7 +24,8 @@ public class Paginable<E extends Producto> {
 	 */
 	Paginable(Producto<?>[] prod) {
 		this.productos = quitaRepetidos(prod);
-		numDePags = (int) Math.ceil(productos.size() / prodPorPag);
+		Double division = (double) productos.size() / prodPorPag;
+		numDePags = (int) Math.ceil(division);
 	}
 
 	/***
@@ -92,7 +93,6 @@ public class Paginable<E extends Producto> {
 			} else {
 				resul = producto.equals(p);
 			}
-
 		}
 		return resul;
 	}
@@ -131,7 +131,7 @@ public class Paginable<E extends Producto> {
 		if (!lista.contains(p)) {
 			return -1;
 		} else {
-			return (int) Math.ceil((lista.indexOf(p) + 1) / prodPorPag);
+			return (int) Math.ceil((double)(lista.indexOf(p) + 1) / prodPorPag);
 		}
 
 	}
