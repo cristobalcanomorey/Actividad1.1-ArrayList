@@ -2,100 +2,105 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class Paginable <E extends Producto> {
+public class Paginable<E extends Producto> {
 
 	/*
-	 * add()					V
-	 * remove()					V
-	 * contains()				V
-	 * getPage(int index)		V
-	 * findPageOf(Producto p)	V
-	 * int getTotalPages()		V
-	 * size()					V
-	 * */
-	
+	 * add() V remove() V contains() V getPage(int index) V findPageOf(Producto p) V
+	 * int getTotalPages() V size() V
+	 */
+
 	private ArrayList<Producto<?>> productos = new ArrayList<Producto<?>>();
 	private int prodPorPag = 3;
 	private int numDePags = 0;
-	
+
 	/***
-	 * Crea un paginable transformando un array de productos a un ArrayList sin productos repetidos
+	 * Crea un paginable transformando un array de productos a un ArrayList sin
+	 * productos repetidos
+	 * 
 	 * @param prod Array de productos
 	 */
-	Paginable(Producto<?>[] prod){
+	Paginable(Producto<?>[] prod) {
 		this.productos = quitaRepetidos(prod);
-		numDePags = (int) Math.ceil(productos.size()/prodPorPag);
+		numDePags = (int) Math.ceil(productos.size() / prodPorPag);
 	}
-	
+
 	/***
 	 * Devuelve un array sin productos repetidos
+	 * 
 	 * @param prod
 	 * @return
 	 */
-	private ArrayList<Producto<?>> quitaRepetidos(Producto<?>[] prod){
+	private ArrayList<Producto<?>> quitaRepetidos(Producto<?>[] prod) {
 		ArrayList<Producto<?>> lista = new ArrayList<Producto<?>>(Arrays.asList(prod));
 		ArrayList<Producto<?>> listaSinRepe = new ArrayList<Producto<?>>();
 		for (Producto<?> producto : lista) {
-			if(!listaSinRepe.contains(producto)) {
+			if (!listaSinRepe.contains(producto)) {
 				listaSinRepe.add(producto);
 			}
 		}
 		return listaSinRepe;
 	}
-		
+
 	/***
-	 * Añade productos en el array si no está repetida y actualiza el nº de páginas buscando la página del último producto añadido
+	 * Añade productos en el array si no está repetida y actualiza el nº de páginas
+	 * buscando la página del último producto añadido
+	 * 
 	 * @param p Producto
 	 */
-	public boolean add(Producto<?> p){
-		if(!productos.contains(p)) {
+	public boolean add(Producto<?> p) {
+		if (!productos.contains(p)) {
 			productos.add(p);
 			numDePags = findPageOf(p);
 			return true;
 		} else {
 			return false;
 		}
-		
+
 	}
-	
+
 	/***
-	 * Elimina el producto del array si está y actualiza el nº de páginas buscando la página del último elemento de la lista
+	 * Elimina el producto del array si está y actualiza el nº de páginas buscando
+	 * la página del último elemento de la lista
+	 * 
 	 * @param p Producto
 	 */
 	public boolean remove(Producto<?> p) {
-		if(contains(p)) {
+		if (contains(p)) {
 			productos.remove(p);
-			numDePags = findPageOf(productos.get(productos.size()-1));
+			numDePags = findPageOf(productos.get(productos.size() - 1));
 			return true;
 		} else {
 			return false;
 		}
-		
-		
+
 	}
-	
+
 	/***
 	 * Busca si el producto está en el array
+	 * 
 	 * @param p Producto
 	 * @return True si p está en el array
 	 */
 	public boolean contains(Producto<?> producto) {
 		boolean resul = false;
 		for (Producto<?> p : productos) {
-			if(resul) {
+			if (resul) {
 				break;
 			} else {
 				resul = producto.equals(p);
 			}
-			
+
 		}
 		return resul;
 	}
-	
+
 	/***
-	 * Calcula que productos hay en la página pasada por parámetro y los devuelve como un array
+	 * Calcula que productos hay en la página pasada por parámetro y los devuelve
+	 * como un array
+	 * 
 	 * @param n Número de página
 	 * @return Devuelve array de productos
 	 */
@@ -103,39 +108,55 @@ public class Paginable <E extends Producto> {
 		int tamPag = prodPorPag;
 		int primProd = n * prodPorPag;
 		int ultProd = primProd + prodPorPag;
-		if(ultProd>productos.size()) {
+		if (ultProd > productos.size()) {
 			ultProd = productos.size();
-			tamPag = ultProd-primProd;
+			tamPag = ultProd - primProd;
 		}
 		Producto<?>[] resul = new Producto<?>[tamPag];
 		List pag = productos.subList(primProd, ultProd);
-				
+
 		for (int i = 0; i < pag.size(); i++) {
 			resul[i] = (Producto<?>) pag.get(i);
 		}
 		return resul;
 	}
-	
+
 	/***
 	 * Devuelve el nº de página en la que se encuentra el producto
+	 * 
 	 * @param p Producto a buscar
 	 * @return -1 si no está o el nº de pag si está
 	 */
 	public int findPageOf(Producto<?> p) {
-		if(!productos.contains(p)) {
+		if (!productos.contains(p)) {
 			return -1;
 		} else {
-			return (int) Math.ceil((productos.indexOf(p)+1)/prodPorPag);
+			return (int) Math.ceil((productos.indexOf(p) + 1) / prodPorPag);
 		}
-		
+
 	}
-	
+
+	public int findPageOf(Producto<?> p, boolean menAMay) {
+		ordenar(menAMay);
+		return findPageOf(p);
+	}
+
+	private ArrayList<Producto<?>> ordenar(boolean menAMay) {
+		if (menAMay) {
+			Collections.sort(productos);
+			return productos;
+		} else {
+			Collections.reverse(productos);
+			return productos;
+		}
+	}
+
 	public int getTotalPages() {
 		return numDePags;
 	}
-	
+
 	public int size() {
 		return productos.size();
 	}
-	
+
 }
