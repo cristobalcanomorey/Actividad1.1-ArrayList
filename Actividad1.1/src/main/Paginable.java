@@ -53,7 +53,7 @@ public class Paginable<E extends Producto> {
 	public boolean add(Producto<?> p) {
 		if (!productos.contains(p)) {
 			productos.add(p);
-			numDePags = findPageOf(p);
+			numDePags = findPageOf(p,productos);
 			return true;
 		} else {
 			return false;
@@ -70,7 +70,7 @@ public class Paginable<E extends Producto> {
 	public boolean remove(Producto<?> p) {
 		if (contains(p)) {
 			productos.remove(p);
-			numDePags = findPageOf(productos.get(productos.size() - 1));
+			numDePags = findPageOf(productos.get(productos.size() - 1),productos);
 			return true;
 		} else {
 			return false;
@@ -127,30 +127,31 @@ public class Paginable<E extends Producto> {
 	 * @param p Producto a buscar
 	 * @return -1 si no está o el nº de pag si está
 	 */
-	public int findPageOf(Producto<?> p) {
-		if (!productos.contains(p)) {
+	public int findPageOf(Producto<?> p, ArrayList<Producto<?>> lista) {
+		if (!lista.contains(p)) {
 			return -1;
 		} else {
-			return (int) Math.ceil((productos.indexOf(p) + 1) / prodPorPag);
+			return (int) Math.ceil((lista.indexOf(p) + 1) / prodPorPag);
 		}
 
 	}
 
-	public int findPageOf(Producto<?> p, boolean menAMay) {
-		ordenar(menAMay);
-		return findPageOf(p);
+	public int findPageOf(Producto<?> p, boolean orden) {
+		ArrayList<Producto<?>> ordenados = ordenar(orden);
+		return findPageOf(p, ordenados);
 	}
 
 	private ArrayList<Producto<?>> ordenar(boolean menAMay) {
+		ArrayList<Producto<?>> ordenados = productos;
 		if (menAMay) {
-			Collections.sort(productos);
-			return productos;
+			Collections.sort(ordenados);
+			return ordenados;
 		} else {
-			Collections.reverse(productos);
-			return productos;
+			Collections.reverse(ordenados);
+			return ordenados;
 		}
 	}
-
+	
 	public int getTotalPages() {
 		return numDePags;
 	}

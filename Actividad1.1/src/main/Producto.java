@@ -44,16 +44,16 @@ public class Producto<E> implements Comparable<Object>{	//implementar comparable
 		Producto<?> p = (Producto<?>)arg0;
 		return this.id == p.id;
 	}
-
+	
 	/***
-	 * Si son iguales devuelve 0, si el del parámetro es menor -1 si es mayor 1
+	 * Si son iguales devuelve 0, si el del parámetro es menor 1 si es mayor -1
 	 */
 	@Override
 	public int compareTo(Object arg0) {
 		Producto<?> p = (Producto<?>)arg0;
-		if(this.id < p.id) {
+		if(this.id > p.id) {
 			return 1;
-		} else if(this.id > p.id){
+		} else if(this.id < p.id){
 			return -1;
 		} else {
 			return 0;
