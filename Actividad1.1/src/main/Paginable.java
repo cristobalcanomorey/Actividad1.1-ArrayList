@@ -120,6 +120,10 @@ public class Paginable<E extends Producto> {
 		}
 		return resul;
 	}
+	
+	public int findPageOf(Producto<?>p) {
+		return findPageOf(p,productos);
+	}
 
 	/***
 	 * Devuelve el nº de página en la que se encuentra el producto
@@ -127,7 +131,7 @@ public class Paginable<E extends Producto> {
 	 * @param p Producto a buscar
 	 * @return -1 si no está o el nº de pag si está
 	 */
-	public int findPageOf(Producto<?> p, ArrayList<Producto<?>> lista) {
+	private int findPageOf(Producto<?> p, ArrayList<Producto<?>> lista) {
 		if (!lista.contains(p)) {
 			return -1;
 		} else {
