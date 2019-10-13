@@ -4,6 +4,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
+		/*Pruebas*/
 		Producto<?> p1 = new Producto(1,"Queso",2.30);
 		Producto<?> p2 = new Producto(2,"Tomate",1.70);
 		Producto<?> p3 = new Producto(3,"Chorizo",3d);
@@ -16,7 +17,7 @@ public class Main {
 		
 		Paginable<?> pg = new Paginable(ap);
 		System.out.println(p6.compareTo(p7));
-//		pg.add(p4);
+		pg.add(p4);
 
 		Producto<?>[] pag2 = pg.getPage(1);
 		

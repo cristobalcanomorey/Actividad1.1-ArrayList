@@ -164,13 +164,13 @@ public class Paginable<E extends Producto> {
 	 * @return ArrayList con los productos ordenados
 	 */
 	public ArrayList<Producto<?>> ordenar(boolean menAMay) {
-		ArrayList<Producto<?>> ordenados = productos;
+		
 		if (menAMay) {
-			Collections.sort(ordenados);
-			return ordenados;
+			Collections.sort(productos);
+			return productos;
 		} else {
-			Collections.reverse(ordenados);
-			return ordenados;
+			Collections.reverse(productos);
+			return productos;
 		}
 	}
 
